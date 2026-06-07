@@ -5,8 +5,6 @@
   connection: ansible.netcommon.network_cli
   vars:
     ansible_network_os: cisco.ios.ios
-    # Force the SSH client to allow the older key exchange algorithm
-    ansible_ssh_common_args: '-o KexAlgorithms=+diffie-hellman-group1-sha1'
 
   tasks:
     - name: Run Show Interface Command
