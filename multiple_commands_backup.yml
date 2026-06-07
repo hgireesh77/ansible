@@ -35,5 +35,5 @@
 
           === SHOW VERSION ===
           {{ device_outputs.stdout[1] }}
-        dest: "/opt/semaphore/cisco_backups/{{ inventory_hostname }}_details.txt"
+        dest: "/opt/semaphore/backup/cisco_devices/{{ inventory_hostname }}_details.txt"
       delegate_to: localhost
