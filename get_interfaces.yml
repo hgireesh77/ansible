@@ -1,0 +1,18 @@
+---
+- name: Gather Cisco IOS Interface Details
+  hosts: cisco_devices
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+  tasks:
+    - name: Run Show Interface Command
+      cisco.ios.ios_command:
+        commands:
+          - show ip interface brief
+      register: interface_output
+
+    - name: Display Interface Details in Semaphore UI Logs
+      ansible.builtin.debug:
+        msg: "{{ interface_output.stdout_lines[0] }}"
