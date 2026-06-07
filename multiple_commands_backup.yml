@@ -1,0 +1,10 @@
+- name: Save Both Outputs into One Local Text File
+      ansible.builtin.copy:
+        content: |
+          === SHOW IP INTERFACE BRIEF ===
+          {{ device_outputs.stdout[0] }}
+
+          === SHOW VERSION ===
+          {{ device_outputs.stdout[1] }}
+        dest: "/opt/semaphore/cisco_backups/{{ inventory_hostname }}_details.txt"
+      delegate_to: localhost
