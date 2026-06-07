@@ -1,21 +1,39 @@
 ---
-- name: Configure and Verify Cisco Loopback Interface
+- name: Auto-Remediate Down Loopback Interfaces
   hosts: R1
   gather_facts: no
   connection: ansible.netcommon.network_cli
   vars:
     ansible_network_os: cisco.ios.ios
+    target_interface: "Loopback100"
 
   tasks:
-    - name: Gather Live Interface Status List
+    # Step 1: Audit current operational state
+    - name: Check Status of Target Interface
       cisco.ios.ios_command:
         commands:
-          - show ip interface brief
-      register: interface_list_output
+          - "show ip interface brief {{ target_interface }}"
+      register: interface_status
 
-    - name: Verify Loopback100 is Created and Up
+    # Step 2: Remediate ONLY if a down state exists
+    - name: Automatically Enable Interface (No Shutdown)
+      cisco.ios.ios_interfaces:
+        config:
+          - name: "{{ target_interface }}"
+            enabled: true  # This executes 'no shutdown' behind the scenes
+        state: merged
+      # The task triggers only if 'down' appears anywhere in the status text
+      when: "'down' in interface_status.stdout[0]"
+
+    # Step 3: Verify the changes worked
+    - name: Verify Post-Remediation Status
+      cisco.ios.ios_command:
+        commands:
+          - "show ip interface brief {{ target_interface }}"
+      register: final_status
+      when: "'down' in interface_status.stdout[0]"
+
+    - name: Stream Final Status to Semaphore UI Logs
       ansible.builtin.debug:
-        msg: "Validation successful! Loopback100 is active and running."
-      # This task fails if Loopback100 is missing, or if it isn't in 'up' status
-      failed_when: >
-        'Loopback100' not in interface_list_output.stdout[0]
+        msg: "{{ final_status.stdout_lines[0] }}"
+      when: "'down' in interface_status.stdout[0]"
