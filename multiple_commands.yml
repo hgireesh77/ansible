@@ -13,15 +13,16 @@
           - show ip interface brief
           - show version
       register: device_outputs
-
-    - name: Stream Command Results to Semaphore UI Logs
-      ansible.builtin.debug:
+    
+   - name: Stream Command Results to Semaphore UI Logs
+     ansible.builtin.debug:
         msg: 
           - "=================================================="
-          - "OUTPUT FOR: {{ item.item }}"
+          - "OUTPUT FOR: show ip interface brief"
           - "=================================================="
-          - "{{ item.stdout_lines }}"
-      # This loops through the outputs of both commands automatically
-      loop: "{{ device_outputs.results }}"
-      loop_control:
-        label: "{{ item.item }}"
+          - "{{ device_outputs.stdout_lines[0] }}"
+          - ""
+          - "=================================================="
+          - "OUTPUT FOR: show version"
+          - "=================================================="
+          - "{{ device_outputs.stdout_lines[1] }}"
