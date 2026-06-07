@@ -1,0 +1,27 @@
+---
+- name: Run Multiple Cisco Commands
+  hosts: R1
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+  tasks:
+    - name: Execute Operational Commands on Cisco Device
+      cisco.ios.ios_command:
+        commands:
+          - show ip interface brief
+          - show version
+      register: device_outputs
+
+    - name: Stream Command Results to Semaphore UI Logs
+      ansible.builtin.debug:
+        msg: 
+          - "=================================================="
+          - "OUTPUT FOR: {{ item.item }}"
+          - "=================================================="
+          - "{{ item.stdout_lines }}"
+      # This loops through the outputs of both commands automatically
+      loop: "{{ device_outputs.results }}"
+      loop_control:
+        label: "{{ item.item }}"
