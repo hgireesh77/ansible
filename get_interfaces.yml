@@ -1,6 +1,6 @@
 ---
 - name: Gather Cisco IOS Interface Details
-  hosts: R2
+  hosts: 192.168.29.111
   gather_facts: no
   connection: ansible.netcommon.network_cli
   vars:
