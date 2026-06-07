@@ -6,7 +6,7 @@
   vars:
     ansible_network_os: cisco.ios.ios
     # Define where on the Semaphore Server you want to drop the backup files
-    backup_root_dir: "/opt/semaphore/cisco_backups"
+    backup_root_dir: "/opt/semaphore/backup/cisco_devices"
 
   tasks:
     - name: Fetch Current Date and Time
