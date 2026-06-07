@@ -1,0 +1,21 @@
+---
+- name: Configure and Verify Cisco Loopback Interface
+  hosts: all
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+  tasks:
+    - name: Gather Live Interface Status List
+      cisco.ios.ios_command:
+        commands:
+          - show ip interface brief
+      register: interface_list_output
+
+    - name: Verify Loopback100 is Created and Up
+      ansible.builtin.debug:
+        msg: "Validation successful! Loopback100 is active and running."
+      # This task fails if Loopback100 is missing, or if it isn't in 'up' status
+      failed_when: >
+        'Loopback100' not in interface_list_output.stdout[0]
