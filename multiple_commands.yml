@@ -14,8 +14,8 @@
           - show version
       register: device_outputs
     
-   - name: Stream Command Results to Semaphore UI Logs
-     ansible.builtin.debug:
+    - name: Stream Command Results to Semaphore UI Logs
+      ansible.builtin.debug:
         msg: 
           - "=================================================="
           - "OUTPUT FOR: show ip interface brief"
