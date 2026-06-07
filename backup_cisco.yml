@@ -1,0 +1,35 @@
+---
+- name: Backup Cisco Running Configurations
+  hosts: R1
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: cisco.ios.ios
+    # Define where on the Semaphore Server you want to drop the backup files
+    backup_root_dir: "/opt/semaphore/cisco_backups"
+
+  tasks:
+    - name: Fetch Current Date and Time
+      ansible.builtin.setup:
+        filter: "ansible_date_time"
+      delegate_to: localhost
+
+    - name: Run Show Running Config
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+      register: running_config_output
+
+    - name: Create Backup Directory on Semaphore Server
+      ansible.builtin.file:
+        path: "{{ backup_root_dir }}"
+        state: directory
+        mode: '0755'
+      delegate_to: localhost
+
+    - name: Write Running Configuration to File
+      ansible.builtin.copy:
+        content: "{{ running_config_output.stdout[0] }}"
+        dest: "{{ backup_root_dir }}/{{ inventory_hostname }}_{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}_{{ ansible_date_time.minute }}.cfg"
+        mode: '0644'
+      delegate_to: localhost
