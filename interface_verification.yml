@@ -1,6 +1,6 @@
 ---
 - name: Configure and Verify Cisco Loopback Interface
-  hosts: all
+  hosts: R1
   gather_facts: no
   connection: ansible.netcommon.network_cli
   vars:
