@@ -4,6 +4,7 @@
   connection: ansible.netcommon.network_cli
   vars:
     ansible_network_os: cisco.ios.ios
+
   tasks:
     - name: Run show version to check hardware
       cisco.ios.ios_command:
