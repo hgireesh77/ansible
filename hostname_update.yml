@@ -12,7 +12,7 @@
         register: final_status
 
     - name: Configure the hostname
-      ios_config:
+      cisco.ios.ios_config:
         lines:
           - hostname LabRouter01
 
