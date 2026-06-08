@@ -7,15 +7,27 @@
     ansible_network_os: cisco.ios.ios
 
   tasks:
-    - name: Ensure specific production VLANs are configured
-      cisco.ios.ios_vlans:
+    - name: Step 2 - Assign Layer 3 IP addresses to the VLAN interfaces
+      cisco.ios.ios_l3_interfaces:
+        state: merged
         config:
-          - vlan_id: 10
-            name: Data_VLAN
-            state: active
-          - vlan_id: 20
-            name: Voice_VLAN
-            state: active
-          - vlan_id: 99
-            name: Management_VLAN
-        state: merged  # merged = add/update; replaced = overwrite matches; overridden = purge unlisted.
+          - name: Vlan10
+            ipv4:
+              - address: 192.168.10.1/24
+          - name: Vlan20
+            ipv4:
+              - address: 192.168.20.1/24
+
+    - name: Step 3 - Ensure the L3 VLAN interfaces are enabled (no shutdown)
+      cisco.ios.ios_interfaces:
+        state: merged
+        config:
+          - name: Vlan10
+            enabled: true
+          - name: Vlan20
+            enabled: true
+
+    - name: Step 4 - Enable global IP routing on the switch hardware
+      cisco.ios.ios_config:
+        lines:
+          - ip routing
