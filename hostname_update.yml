@@ -6,7 +6,7 @@
     ansible_network_os: cisco.ios.ios
   tasks:
     - name: Run show version to check hardware
-      ios_command:
+      cisco.ios.ios_command:
         commands:
           - show version
         register: final_status
