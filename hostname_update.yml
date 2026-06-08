@@ -15,7 +15,7 @@
     - name: Configure the hostname
       cisco.ios.ios_config:
         lines:
-          - hostname Router01
+          - hostname LabRouter01
 
     #- name: Stream Final Status to Semaphore UI Logs
     #  ansible.builtin.debug:
