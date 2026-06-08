@@ -1,9 +1,9 @@
 - name: Configure Cisco IOS Hostname
   hosts: R1
   gather_facts: no
-  collections:
-    - cisco.ios
-
+  connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: cisco.ios.ios
   tasks:
     - name: Run show version to check hardware
       ios_command:
