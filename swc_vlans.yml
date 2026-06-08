@@ -31,3 +31,14 @@
       cisco.ios.ios_config:
         lines:
           - ip routing
+
+    - name: Ensure specific production VLANs are configured
+      cisco.ios.ios_vlans:
+        config:
+          - vlan_id: 10
+            name: Data_VLAN
+            state: active
+          - vlan_id: 20
+            name: Voice_VLAN
+            state: active
+        state: merged  # merged = add/update; replaced = overwrite matches; overridden = purge unlisted.
