@@ -32,13 +32,15 @@
         lines:
           - ip routing
 
-    - name: Ensure specific production VLANs are configured
-      cisco.ios.ios_vlans:
-        config:
-          - vlan_id: 10
-            name: Data_VLAN
-            state: active
-          - vlan_id: 20
-            name: Voice_VLAN
-            state: active
-        state: merged  # merged = add/update; replaced = overwrite matches; overridden = purge unlisted.
+    - name: Create VLANs inside the legacy database shell
+      cisco.ios.ios_command:
+        commands:
+          - command: vlan database
+            prompt: 'vlan\)'          # Detects entering the switch(vlan)# prompt
+            answer: 'vlan 10 name Operations_VLAN'
+
+          - command: vlan 20 name Finance_VLAN
+            prompt: 'vlan\)'
+            answer: 'apply'            # Commits changes to the vlan.dat file
+
+          - command: exit              # Safely exits the database shell
