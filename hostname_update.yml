@@ -16,9 +16,6 @@
         lines:
           - hostname LabRouter01
 
-      
-      when: "'down' in interface_status.stdout[0]"
-
     - name: Stream Final Status to Semaphore UI Logs
       ansible.builtin.debug:
         msg: "{{ final_status.stdout_lines[0] }}"
