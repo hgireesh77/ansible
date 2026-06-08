@@ -1,0 +1,20 @@
+---
+- name: Automate Cisco IOS Network Backups
+  hosts: R1
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+  tasks:
+    - name: Fetch and backup the running configuration
+      cisco.ios.ios_config:
+        backup: yes
+        backup_options:
+          filename: "{{ inventory_hostname }}-running.cfg"
+          dir_path: "./backups/"
+      register: backup_result
+
+    - name: Confirm backup path destination
+      ansible.builtin.debug:
+        msg: "Backup successfully saved to {{ backup_result.backup_path }}"
