@@ -1,0 +1,16 @@
+- name: Configure Cisco IOS Hostname
+  hosts: R1
+  gather_facts: no
+  collections:
+    - cisco.ios
+
+  tasks:
+    - name: Run show version to check hardware
+      ios_command:
+        commands:
+          - show version
+
+    - name: Configure the hostname
+      ios_config:
+        lines:
+          - hostname LabRouter01
