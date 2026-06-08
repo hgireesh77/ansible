@@ -9,7 +9,8 @@
   tasks:
     - name: Fetch and backup the running configuration
       cisco.ios.ios_config:
-        backup: yes
+        save_when: always #copy run start
+        backup: yes # below lines copy the file to "/tmp" folder in semaphore server
         backup_options:
           filename: "{{ inventory_hostname }}-running.cfg"
           dir_path: "./backups/"
