@@ -1,0 +1,21 @@
+---
+- name: Manage VLANs on Cisco IOS Switches
+  hosts: S1
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+  tasks:
+    - name: Ensure specific production VLANs are configured
+      cisco.ios.ios_vlans:
+        config:
+          - vlan_id: 10
+            name: Data_VLAN
+            state: active
+          - vlan_id: 20
+            name: Voice_VLAN
+            state: active
+          - vlan_id: 99
+            name: Management_VLAN
+        state: merged  # merged = add/update; replaced = overwrite matches; overridden = purge unlisted.
