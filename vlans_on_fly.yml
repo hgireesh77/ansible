@@ -1,6 +1,6 @@
 ---
 - name: Configure Cisco VLAN on the Fly
-  hosts: S1
+  hosts: hosts
   gather_facts: false
   connection: ansible.netcommon.network_cli
   vars:
