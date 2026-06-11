@@ -1,1 +1,1 @@
-print("Hello World", flush=True)
+print("Hello World")
