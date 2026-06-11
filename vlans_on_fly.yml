@@ -12,4 +12,4 @@
         config:
           - vlan_id: "{{ vlan_id | int }}"
             name: "{{ vlan_name | string }}"
-          - state: merged
+            state: merged
