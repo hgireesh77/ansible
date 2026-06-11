@@ -10,6 +10,6 @@
     - name: Ensure VLAN exists with correct name
       cisco.ios.ios_vlans:
         config:
-          - vbid: "{{ vlan_id }}"
-            name: "{{ vlan_name }}"
+          - vbid: "{{ vlan_id | int }}"
+            name: "{{ vlan_name | string }}"
           - state: merged
