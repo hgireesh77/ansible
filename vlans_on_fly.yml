@@ -1,0 +1,15 @@
+---
+- name: Configure Cisco VLAN on the Fly
+  hosts: S1
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+  tasks:
+    - name: Ensure VLAN exists with correct name
+      cisco.ios.ios_vlans:
+        config:
+          - vbid: "{{ vlan_id }}"
+            name: "{{ vlan_name }}"
+          - state: merged
