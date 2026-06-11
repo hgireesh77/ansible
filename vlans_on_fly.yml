@@ -19,4 +19,5 @@
         state: merged
         config:
           - name: "{{ vlan_name }}"
+            description: "{{ vlan_desc }}"
             enabled: true
