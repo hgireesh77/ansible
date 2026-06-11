@@ -8,8 +8,15 @@
 
   tasks:
     - name: Ensure VLAN exists with correct name
-      cisco.ios.ios_vlans:
+      cisco.ios.ios_l3_interfaces:
+        state: merged
         config:
-          - vlan_id: "{{ vlan_id | int }}"
-            name: "{{ vlan_name | string }}"
-            state: active
+          - name: "{{ vlan_name }}"
+            ipv4:
+              - address: "{{ ip_address_mask }}"
+    - name: Step 3 - Ensure the L3 VLAN interfaces are enabled (no shutdown)
+      cisco.ios.ios_interfaces:
+        state: merged
+        config:
+          - name: "{{ vlan_name }}"
+            enabled: true
